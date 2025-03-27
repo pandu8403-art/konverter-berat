@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konverter Berat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Konverter Berat</h1>
+
+        <div class="input">
+            <div class="label-input">
+                <label for="nilaiInput">Masukkan Berat:</label>
+                <input type="number" class="nilai-input" placeholder="Contoh: 1.5">
+            </div>
+
+            <div class="label-input">
+                <label for="dariSatuan">Dari Satuan:</label>
+                <select class="dari-satuan">
+                    <option value="t">Ton (t)</option>
+                    <option value="kg" selected>Kilogram (kg)</option>
+                    <option value="g">Gram (g)</option>
+                    <option value="mg">Miligram (mg)</option>
+                    <option value="lb">Pound (lb)</option>
+                    <option value="oz">Ons (oz)</option>
+                </select>
+            </div>
+
+            <div class="label-input">
+                <label for="keSatuan">Ke Satuan:</label>
+                <select class="ke-satuan">
+                    <option value="t">Ton (t)</option>
+                    <option value="g">Gram (g)</option>
+                    <option value="kg" selected>Kilogram (kg)</option>
+                    <option value="mg">Miligram (mg)</option>
+                    <option value="lb">Pound (lb)</option>
+                    <option value="oz">Ons (oz)</option>
+                </select>
+            </div>
+
+            <button class="button-konversi">Konversi</button>
+        </div>
+
+        <div class="hasil hidden">
+            <h2>Hasil Konversi</h2>
+            <div class="kotak-hasil">
+                <span class="nilai-asli">0</span> <span class="teks-satuan-asal">kg</span> =
+                <span class="nilai-terkonversi">0</span> <span class="teks-satuan">g</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttonKonversi = document.querySelector('.button-konversi');
+            const nilaiInput = document.querySelector('.nilai-input');
+            const dariSatuan = document.querySelector('.dari-satuan');
+            const keSatuan = document.querySelector('.ke-satuan');
+            const bagianHasil = document.querySelector('.hasil');
+            const nilaiAsli = document.querySelector('.nilai-asli');
+            const teksSatuanAsal = document.querySelector('.teks-satuan-asal');
+            const nilaiTerkonversi = document.querySelector('.nilai-terkonversi');
+            const teksSatuan = document.querySelector('.teks-satuan');
+
+            const faktorKonversi = {
+                t: 1000000,
+                kg: 1000,
+                g: 1,
+                mg: 0.001,
+                lb: 453.592,
+                oz: 28.3495
+            };
+
+            buttonKonversi.addEventListener('click', function() {
+                const nilai = parseFloat(nilaiInput.value);
+
+                if (isNaN(nilai)) {
+                    alert('Masukkan nilai berat yang valid!');
+                    return;
+                }
+
+                const nilaiDalamGram = nilai * faktorKonversi[dariSatuan.value];
+                const hasil = nilaiDalamGram / faktorKonversi[keSatuan.value];
+
+                nilaiAsli.textContent = nilai;
+                teksSatuanAsal.textContent = dariSatuan.options[dariSatuan.selectedIndex].text;
+                nilaiTerkonversi.textContent = hasil.toFixed(6).replace(/\.0+$/, '');
+                teksSatuan.textContent = keSatuan.options[keSatuan.selectedIndex].text;
+
+                bagianHasil.classList.remove('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
